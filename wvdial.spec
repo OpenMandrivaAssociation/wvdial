@@ -1,17 +1,18 @@
-%define name      wvdial
-%define version   1.56
-%define release   %mkrel 2
+%define name	wvdial
+%define version	1.5.90
+%define release	%mkrel 1
 
 Summary:	A heuristic autodialer for PPP connections
 Name:		%{name}
 Version:	%{version}
 Release:	%{release}
+Epoch:		1
 License:	LGPL
 Group:		System/Configuration/Networking
-Source0:	http://open.nit.ca/download/%{name}-%{version}.tar.bz2
+Source0:	http://open.nit.ca/download/%{name}-%{version}.tar.gz
 Url:		http://open.nit.ca/wvdial
-Patch0: 	%{name}-%{version}-bad_analyse.patch
-Patch1:        %{name}-%{version}-remotename.patch
+Patch0: 	wvdial-1.56-bad_analyse.patch
+Patch1:		wvdial-1.56-remotename.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: 	ppp >= 2.3.7
 Buildrequires: 	libwvstreams-devel >= 4.2
