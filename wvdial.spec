@@ -15,7 +15,7 @@ Patch0: 	wvdial-1.56-bad_analyse.patch
 Patch1:		wvdial-1.56-remotename.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: 	ppp >= 2.3.7
-Buildrequires: 	libwvstreams-devel >= 4.2
+Buildrequires: 	wvstreams-devel >= 4.2
 
 %description
 WvDial automatically locates and configures modems and can log into
