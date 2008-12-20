@@ -1,13 +1,9 @@
-%define name	wvdial
-%define version	1.60
-%define release	%mkrel 2
-
 Summary:	A heuristic autodialer for PPP connections
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Name:		wvdial
+Version:	1.60
+Release:	%{mkrel 2}
 Epoch:		1
-License:	LGPL
+License:	LGPLv2+
 Group:		System/Configuration/Networking
 Source0:	http://open.nit.ca/download/%{name}-%{version}.tar.gz
 Url:		http://open.nit.ca/wvdial
@@ -34,16 +30,16 @@ up a PPP connection.
 %make "VERBOSE=1"
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 make install \
-        PREFIX=${RPM_BUILD_ROOT}%{_prefix} \
-        BINDIR=${RPM_BUILD_ROOT}%{_bindir} \
-        MANDIR=${RPM_BUILD_ROOT}%{_mandir} \
-        PPPDIR=${RPM_BUILD_ROOT}%{_sysconfdir}/ppp/peers
-install -d -m 755 $RPM_BUILD_ROOT%{_sysconfdir}/bash_completion.d
+        PREFIX=%{buildroot}%{_prefix} \
+        BINDIR=%{buildroot}%{_bindir} \
+        MANDIR=%{buildroot}%{_mandir} \
+        PPPDIR=%{buildroot}%{_sysconfdir}/ppp/peers
+install -d -m 755 %{buildroot}%{_sysconfdir}/bash_completion.d
 
 %clean
- rm -rf $RPM_BUILD_ROOT
+ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
