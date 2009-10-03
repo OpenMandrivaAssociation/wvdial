@@ -9,6 +9,7 @@ Source0:	http://open.nit.ca/download/%{name}-%{version}.tar.gz
 Url:		http://open.nit.ca/wvdial
 Patch0: 	wvdial-1.56-bad_analyse.patch
 Patch1:		wvdial-1.56-remotename.patch
+Patch2:		wvdial-1.60-dirent.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: 	ppp >= 2.3.7
 Buildrequires: 	wvstreams-devel >= 4.2
@@ -25,6 +26,7 @@ up a PPP connection.
 %setup -q
 %patch0 -p1 -b .bad_analyse
 %patch1 -p1 -b .remotename
+%patch2 -p1 -b .dirent
 
 %build
 %make "VERBOSE=1"
