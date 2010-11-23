@@ -1,15 +1,14 @@
 Summary:	A heuristic autodialer for PPP connections
 Name:		wvdial
-Version:	1.60
-Release:	%{mkrel 3}
+Version:	1.61
+Release:	%{mkrel 1}
 Epoch:		1
 License:	LGPLv2+
 Group:		System/Configuration/Networking
-Source0:	http://open.nit.ca/download/%{name}-%{version}.tar.gz
-Url:		http://open.nit.ca/wvdial
+Source0:	http://wvstreams.googlecode.com/files/%{name}-%{version}.tar.gz
+Url:		http://alumnit.ca/wiki/index.php?page=WvDial
 Patch0: 	wvdial-1.56-bad_analyse.patch
 Patch1:		wvdial-1.56-remotename.patch
-Patch2:		wvdial-1.60-dirent.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: 	ppp >= 2.3.7
 Buildrequires: 	wvstreams-devel >= 4.2
@@ -26,10 +25,10 @@ up a PPP connection.
 %setup -q
 %patch0 -p1 -b .bad_analyse
 %patch1 -p1 -b .remotename
-%patch2 -p1 -b .dirent
 
 %build
-%make "VERBOSE=1"
+./configure
+make "VERBOSE=1"
 
 %install
 rm -rf %{buildroot}
