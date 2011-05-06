@@ -1,7 +1,7 @@
 Summary:	A heuristic autodialer for PPP connections
 Name:		wvdial
 Version:	1.61
-Release:	%{mkrel 1}
+Release:	%mkrel 2
 Epoch:		1
 License:	LGPLv2+
 Group:		System/Configuration/Networking
