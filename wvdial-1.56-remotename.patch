@@ -1,0 +1,90 @@
+--- wvdial-1.56/wvdial.1.remotename	2006-02-22 19:08:04.000000000 +0100
++++ wvdial-1.56/wvdial.1	2007-04-28 16:57:11.000000000 +0200
+@@ -61,6 +61,12 @@
+ normal method of having wvdial negotiate the connection and then call
+ pppd.
+ .TP
++.B \-\-remotename
++Override the Remote Name setting in the dialer configuration section of the
++configuration file. This is mainly useful when you dial to multiple systems
++with the same user name and password, and you don't want to use inheritance
++to override this setting (which is the recommended way to do it).
++.TP
+ .B \-C, \-\-config=CONFIGFILE
+ Run wvdial with CONFIGFILE as the configuration file, instead of
+ .IR /etc/wvdial.conf .
+--- wvdial-1.56/wvdial.cc.remotename	2005-12-07 19:13:00.000000000 +0100
++++ wvdial-1.56/wvdial.cc	2007-04-28 16:58:16.000000000 +0200
+@@ -96,6 +96,7 @@
+     
+     bool chat_mode = false;
+     bool write_syslog = true;
++    WvString remote_name = NULL;
+     
+     signal(SIGTERM, signalhandler);
+     signal(SIGINT, signalhandler);
+@@ -127,6 +128,9 @@
+ 			     "used when running wvdial from pppd", chat_mode);
+     args.add_reset_bool_option('n', "no-syslog",
+ 			       "don't send output to SYSLOG", chat_mode);
++    args.add_option(0, "remotename",
++		    "override the remotename to pass to pppd",
++		    "remotename", remote_name);
+     args.add_optional_arg("SECTION", true);
+     args.add_optional_arg("OPTION=value", true);
+ 
+@@ -210,7 +214,7 @@
+ 	} 
+     }
+     
+-    WvDialer dialer(cfg, &sections, chat_mode);
++    WvDialer dialer(cfg, &sections, chat_mode, &remote_name);
+     
+     if (!chat_mode)
+ 	if (dialer.isok() && dialer.options.ask_password)
+--- wvdial-1.56/wvdialer.cc.remotename	2005-12-07 19:13:00.000000000 +0100
++++ wvdial-1.56/wvdialer.cc	2007-04-28 16:57:11.000000000 +0200
+@@ -52,7 +52,8 @@
+ //       WvDialer Public Functions
+ //**************************************************
+ 
+-WvDialer::WvDialer( WvConf &_cfg, WvStringList *_sect_list, bool _chat_mode )
++WvDialer::WvDialer( WvConf &_cfg, WvStringList *_sect_list, bool _chat_mode,
++                    WvString *_remote_name )
+ /***************************************************************************/
+ : WvStreamClone( 0 ),
+     cfg(_cfg), log( "WvDial", WvLog::Debug ),
+@@ -122,6 +123,12 @@
+ 	return;
+     }
+     
++    // Override configuration settings with any we got from the command-line.
++    if( _remote_name != NULL ) {
++	options.remote = *_remote_name;
++	options.remote.unique();
++    }
++
+     if (options.provider.len()) 
+     {
+ 	log( WvLog::Notice, "Dialing %s %s.\n",
+@@ -1198,6 +1205,8 @@
+ 	options.new_pppd && options.idle_seconds >= 0 ? (const char *)idle_seconds : NULL, 
+ 	"logfd", buffer1,
+ //	!!buffer2 ? "passwordfd" : NULL, !!buffer2 ? (const char *)buffer2 : NULL,
++	options.remote.len() ? "remotename"   : NULL,
++	options.remote.len() ? (const char *) options.remote : NULL,
+ 	NULL
+     };
+     
+--- wvdial-1.56/wvdialer.h.remotename	2005-11-17 21:44:36.000000000 +0100
++++ wvdial-1.56/wvdialer.h	2007-04-28 16:57:11.000000000 +0200
+@@ -43,7 +43,8 @@
+ /***********************************/
+ {
+ public:
+-    WvDialer( WvConf &_cfg, WvStringList *_sect_list, bool _chat_mode = false );
++    WvDialer( WvConf &_cfg, WvStringList *_sect_list, bool _chat_mode = false,
++              WvString *_remote_name = NULL );
+     virtual ~WvDialer();
+    
+     bool	dial();

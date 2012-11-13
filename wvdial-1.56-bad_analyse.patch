@@ -1,0 +1,77 @@
+diff -ru wvdial-1.54.0-bad_analyse/wvdialmon.cc wvdial-1.54.0/wvdialmon.cc
+--- wvdial-1.54.0-bad_analyse/wvdialmon.cc	2003-11-14 20:46:13.000000000 +0100
++++ wvdial-1.54.0/wvdialmon.cc	2003-12-23 22:38:23.235746800 +0100
+@@ -22,8 +22,7 @@
+ 
+ WvDialMon::WvDialMon()
+     : log( "WvDial", WvLog::Debug ),
+-      err( log.split( WvLog::Error ) ),
+-      buffer("")
++      err( log.split( WvLog::Error ) )
+ {
+     // executename = WvString( "" );
+     connectmsg = WvString( "Connected... Press Ctrl-C to disconnect\n" );
+@@ -34,8 +33,6 @@
+     
+     route_fd = (FILE *) 0;
+     
+-    buffer.setsize(100);
+-    
+     regcomp( &rx_status, "status *= *", REG_EXTENDED );
+     regcomp( &rx_quote, "\\\"[^\\\"]+\\\"", REG_EXTENDED );
+     regcomp( &rx_namesrv, "nameserver *[0-9]+.[0-9]+.[0-9]+.[0-9]+", REG_EXTENDED );
+@@ -141,6 +138,7 @@
+ 	!strncmp(line, "secondary DNS address", 20)   )
+     {
+ 	log("%s\n",line);
++	return NULL;
+     }
+     
+     // Script stuff
+@@ -260,22 +258,26 @@
+     
+     // connect time stuff
+     // 
+-    if (strncmp(line, "Connect time", 12) == 0)
++    if (strncmp(line, "Connect time", 12) == 0) {
+ 	log("%s\n",line);
+-    
++	return NULL;
++    }
+     
+     // interface stuff
+     // 
+-    if (strncmp(line, "Using interface", 15) == 0)
++    if (strncmp(line, "Using interface", 15) == 0) {
+ 	log("%s\n", line);
+-    
++	return NULL;
++    }
++
+     // terminate stuff
+     // 
+-    if( strncmp(line,"Terminating", 11 ) == 0 )
++    if( strncmp(line,"Terminating", 11 ) == 0 ) {
+ 	log("%s\n",line);
+-    
+-    
+-    return buffer.edit();
++	return NULL;
++    }
++
++    return (char *) line;
+ }
+ 
+ 
+diff -ru wvdial-1.54.0-bad_analyse/wvdialmon.h wvdial-1.54.0/wvdialmon.h
+--- wvdial-1.54.0-bad_analyse/wvdialmon.h	2003-11-14 20:46:13.000000000 +0100
++++ wvdial-1.54.0/wvdialmon.h	2003-12-23 22:38:23.236746648 +0100
+@@ -63,8 +63,6 @@
+    WvLog log;
+    WvLog err;
+    
+-   WvString buffer;
+-   
+    int get_quotedtext(char *dest, const char *line);
+    
+    // flag
