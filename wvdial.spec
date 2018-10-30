@@ -1,7 +1,7 @@
 Summary:	A heuristic autodialer for PPP connections
 Name:		wvdial
 Version:	1.61
-Release:	11
+Release:	12
 Epoch:		1
 License:	LGPLv2+
 Group:		System/Configuration/Networking
@@ -126,7 +126,7 @@ install -d -m 755 %{buildroot}%{_sysconfdir}/bash_completion.d
 - Fix undefined references on crypt lib
 - Fix buildrequires with vitual providing name
 
-* Mon Jul 21 2003 Per Øyvind Karlsen <peroyvind@sintrax.net> 1.53-2mdk
+* Mon Jul 21 2003 Per Ã˜yvind Karlsen <peroyvind@sintrax.net> 1.53-2mdk
 - rebuild
 
 * Thu Dec 19 2002 Aurelien Lemaire <alemaire@mandrakesoft.com> 1.53-1mdk
