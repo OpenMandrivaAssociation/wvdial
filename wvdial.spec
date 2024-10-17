@@ -6,7 +6,7 @@ Epoch:		1
 License:	LGPLv2+
 Group:		System/Configuration/Networking
 Source0:	http://wvstreams.googlecode.com/files/%{name}-%{version}.tar.gz
-Url:		http://alumnit.ca/wiki/index.php?page=WvDial
+Url:		https://alumnit.ca/wiki/index.php?page=WvDial
 Patch0: 	wvdial-1.56-bad_analyse.patch
 Patch1:		wvdial-1.56-remotename.patch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
